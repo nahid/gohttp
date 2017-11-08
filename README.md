@@ -38,3 +38,26 @@ func main() {
 	}
 }
 ```
+
+### Available Method
+
+- `Get(url string)`
+- `Post(url string)`
+- `Put(url string)`
+- `Patch(url string)`
+- `Delete(url string)`
+- `FormData(data map[string]string)`
+- `Json(data map[string]interface{})`
+- `Query(data map[string]string{})`
+- `MultipartFormData(data map[string]string{})`
+- `Upload(name, file string)`
+- `Uploads(files map[string]string{})`
+
+#### Response
+
+- `GetResp()`
+- `GetStatusCode()`
+- `GetBody()`
+- `GetBodyAsByte()`
+- `GetBodyAsString()`
+- `GetBodyWithUnmarshal(v interface{})`
