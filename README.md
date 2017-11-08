@@ -12,14 +12,12 @@ go get github.com/nahid/gohttp
 #### `POST https://httpbin.org/post`
 
 ```go
-
 package main
 
 import (
 	"github.com/nahid/gohttp"
 	"fmt"
 )
-
 
 func main() {
 	req := gohttp.Request{}
@@ -32,10 +30,11 @@ func main() {
 		panic(err)
 	}
 
-	var resps map[string]interface{}
+    if resp.GetStatusCode() == 200 {
+		var resps map[string]interface{}
 
-	_ = resp.GetBodyWithUnmarshal(&resps)
-	fmt.Println(resps["form"])
-
+		_ = resp.GetBodyWithUnmarshal(&resps)
+		fmt.Println(resps["form"])
+	}
 }
 ```
