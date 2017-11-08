@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-
+// Request is a request type
 type Request struct {
 	formVals *bytes.Buffer
 	multipartBuffer bytes.Buffer
@@ -21,8 +21,8 @@ type Request struct {
 	contentType string
 }
 
-func init()  {
-	req := Request{}
+// init set contentType initially
+func (req *Request) init()  {
 	req.contentType = "application/x-www-form-urlencoded"
 }
 
@@ -72,27 +72,27 @@ func (req *Request) Headers(headerVals map[string]string) *Request {
 }
 
 // Get is a get http request
-func (req *Request) Get(url string) (*http.Response, error) {
+func (req *Request) Get(url string) (*Response, error) {
 	return req.makeRequest("GET", url, req.formVals)
 }
 
 // Post is a post http request
-func (req *Request) Post(url string) (*http.Response, error) {
+func (req *Request) Post(url string) (*Response, error) {
 	return req.makeRequest("POST", url, req.formVals)
 }
 
 // Put is a put http request
-func (req *Request) Put(url string) (*http.Response, error) {
+func (req *Request) Put(url string) (*Response, error) {
 	return req.makeRequest("PUT", url, req.formVals)
 }
 
 // Patch is a patch http request
-func (req *Request) Patch(url string) (*http.Response, error) {
+func (req *Request) Patch(url string) (*Response, error) {
 	return req.makeRequest("PATCH", url, req.formVals)
 }
 
 // Delete is a delete http request
-func (req *Request) Delete(url string) (*http.Response, error) {
+func (req *Request) Delete(url string) (*Response, error) {
 	return req.makeRequest("DELETE", url, req.formVals)
 }
 
@@ -111,17 +111,17 @@ func (req *Request) MultipartFormData(formData map[string]string) *Request  {
 
 // Upload upload a single file
 func (req *Request) Upload(name, file string) (*Request) {
-	// Prepare a form that you will submit to that URL.
 	if req.writer == nil {
 		req.writer = multipart.NewWriter(&req.multipartBuffer)
 	}
 
-	// Add your image file
 	f, err := os.Open(file)
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
+
+	// Add file
 	fw, err := req.writer.CreateFormFile(name, file)
 	if err != nil {
 		panic(err)
@@ -129,8 +129,7 @@ func (req *Request) Upload(name, file string) (*Request) {
 	if _, err = io.Copy(fw, f); err != nil {
 		panic(err)
 	}
-	// Don't forget to close the multipart writer.
-	// If you don't close it, your request will be missing the terminating boundary.
+
 	req.contentType = req.writer.FormDataContentType()
 	req.formVals = &req.multipartBuffer
 	return req
@@ -147,8 +146,9 @@ func (req *Request) Uploads(files map[string]string) (*Request) {
 }
 
 // makeRequest makes a http request
-func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*http.Response, error) {
+func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Response, error) {
 	client := http.Client{}
+	response := Response{}
 	verb = strings.ToUpper(verb)
 	var data *bytes.Buffer
 
@@ -182,5 +182,7 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*http
 		return nil, err
 	}
 
-	return resp, nil
+	response.HttpResp = resp
+
+	return &response, nil
 }
