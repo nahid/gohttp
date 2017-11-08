@@ -30,7 +30,7 @@ func main() {
 		panic(err)
 	}
 
-    if resp.GetStatusCode() == 200 {
+	if resp.GetStatusCode() == 200 {
 		var resps map[string]interface{}
 
 		_ = resp.GetBodyWithUnmarshal(&resps)
