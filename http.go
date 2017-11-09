@@ -9,10 +9,15 @@ import (
 	"bytes"
 	"mime/multipart"
 	"os"
+	"time"
 )
 
 // Request is a request type
 type Request struct {
+	Transport http.Transport
+	Client *http.Client
+	Cookie http.CookieJar
+	Timeout time.Duration
 	formVals *bytes.Buffer
 	multipartBuffer bytes.Buffer
 	queryVals string
@@ -21,10 +26,19 @@ type Request struct {
 	contentType string
 }
 
-// init set contentType initially
-func (req *Request) init()  {
-	req.contentType = "application/x-www-form-urlencoded"
+func (req *Request) createClient() *http.Client {
+	tr := &req.Transport
+	if req.Client == nil {
+		req.Client = &http.Client{
+			Transport: tr,
+			Timeout: req.Timeout,
+			Jar: req.Cookie,
+		}
+	}
+
+	return req.Client
 }
+
 
 // Json set json data with request
 func (req *Request) Json(formJson map[string]interface{}) *Request  {
@@ -147,10 +161,10 @@ func (req *Request) Uploads(files map[string]string) (*Request) {
 
 // makeRequest makes a http request
 func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Response, error) {
-	client := http.Client{}
 	response := Response{}
 	verb = strings.ToUpper(verb)
 	var data *bytes.Buffer
+	client := req.createClient()
 
 	if req.writer != nil {
 		req.writer.Close()
@@ -177,12 +191,13 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 		request.Header.Set(key, val)
 	}
 
+	request.Close = true
 	resp, err := client.Do(request)
+
 	if err != nil {
 		return nil, err
 	}
 
 	response.HttpResp = resp
-
 	return &response, nil
 }

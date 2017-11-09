@@ -20,6 +20,9 @@ func (res *Response) GetStatusCode() int {
 }
 
 func (res *Response) GetBody() io.Reader {
+	if res.HttpResp == nil {
+		return nil
+	}
 	return res.HttpResp.Body
 }
 
