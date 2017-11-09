@@ -41,6 +41,8 @@ func main() {
 
 ### Available Method
 
+#### Request
+
 - `Get(url string)`
 - `Post(url string)`
 - `Put(url string)`
@@ -64,3 +66,5 @@ func main() {
 - `GetBodyAsByte()`
 - `GetBodyAsString()`
 - `GetBodyWithUnmarshal(v interface{})`
+
+See API doc https://godoc.org/github.com/nahid/gohttp

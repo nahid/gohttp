@@ -7,18 +7,22 @@ import (
 	"encoding/json"
 )
 
+// Response is a http response struct
 type Response struct {
 	HttpResp *http.Response
 }
 
+// GetResp get net/http original response
 func (res *Response) GetResp() *http.Response {
 	return res.HttpResp
 }
 
+// GetStatusCode returns http status code
 func (res *Response) GetStatusCode() int {
 	return res.HttpResp.StatusCode
 }
 
+// GetBody returns response body
 func (res *Response) GetBody() io.Reader {
 	if res.HttpResp == nil {
 		return nil
@@ -27,6 +31,7 @@ func (res *Response) GetBody() io.Reader {
 }
 
 
+// GetBodyAsByte returns response body as byte
 func (res *Response) GetBodyAsByte() ([]byte, error) {
 	body, err := ioutil.ReadAll(res.HttpResp.Body)
 	if err != nil {
@@ -36,6 +41,7 @@ func (res *Response) GetBodyAsByte() ([]byte, error) {
 	return body, nil
 }
 
+// GetBodyAsString returns resonpose body as string
 func (res *Response) GetBodyAsString() (string, error) {
 	body, err := ioutil.ReadAll(res.HttpResp.Body)
 	if err != nil {
@@ -46,6 +52,7 @@ func (res *Response) GetBodyAsString() (string, error) {
 }
 
 
+// GetBodyWithUnmarshal unmarshal response body
 func (res Response) GetBodyWithUnmarshal(v interface{}) (error) {
 	body, err := res.GetBodyAsByte()
 	if err != nil {

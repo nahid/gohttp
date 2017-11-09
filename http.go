@@ -221,7 +221,6 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 		request.SetBasicAuth(req.basicUser, req.basicPasswd)
 	}
 
-
 	// set headers from Headers method
 	for key, val := range req.headers {
 		request.Header.Set(key, val)
