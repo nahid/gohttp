@@ -24,6 +24,7 @@ type Request struct {
 	headers map[string]string
 	writer *multipart.Writer
 	contentType string
+	basicUser, basicPasswd string
 }
 
 func (req *Request) createClient() *http.Client {
@@ -66,6 +67,23 @@ func (req *Request) FormData(formValues map[string]string) *Request {
 	return req
 }
 
+// Body set Post request as body
+func (req *Request) Body(formValues []byte) *Request {
+
+	req.formVals = bytes.NewBuffer(formValues)
+	req.contentType = "application/octet-stream"
+
+	return req
+}
+
+func (req *Request) Text(formValues string) *Request {
+
+	req.formVals = bytes.NewBuffer([]byte(formValues))
+	req.contentType = "text/plain"
+
+	return req
+}
+
 // Query set request query param
 func (req *Request) Query(formValues map[string]string) *Request {
 	vals := url.Values{}
@@ -87,11 +105,9 @@ func (req *Request) Headers(headerVals map[string]string) *Request {
 
 // BasicAuth make basic authentication
 func (req *Request) BasicAuth(username, password string) *Request {
-	credentials := username + ":" + password
-	auth := base64.StdEncoding.EncodeToString([]byte(credentials))
-	headers := req.headers
-	headers["Authorization"]	= "Basic " + auth
-	req.headers = headers
+	req.basicUser = username
+	req.basicPasswd = password
+
 	return req
 }
 
@@ -173,7 +189,8 @@ func (req *Request) Uploads(files map[string]string) (*Request) {
 func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Response, error) {
 	response := Response{}
 	verb = strings.ToUpper(verb)
-	var data *bytes.Buffer
+	var request *http.Request
+	var err error
 	client := req.createClient()
 
 	if req.writer != nil {
@@ -183,31 +200,34 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 		url += "?" + req.queryVals
 	}
 
-	if verb == "GET" {
-		data = nil
-	} else {
-		data = payloads
+	if payloads == nil {
+		payloads = bytes.NewBuffer([]byte(``))
 	}
 
-	request, err := http.NewRequest(verb, url, data)
+	if verb == "GET" {
+		request, err = http.NewRequest(verb, url, nil)
+	} else {
+		request, err = http.NewRequest(verb, url, payloads)
+	}
+
 	if err != nil {
 		return nil, err
 	}
 
 	request.Header.Set("Content-Type", req.contentType)
+	request.SetBasicAuth(req.basicUser, req.basicPasswd)
 
 	// set headers from Headers method
 	for key, val := range req.headers {
 		request.Header.Set(key, val)
 	}
 
-	request.Close = true
+	//request.Close = true
 	resp, err := client.Do(request)
 
 	if err != nil {
 		return nil, err
 	}
-
 	response.HttpResp = resp
 	return &response, nil
 }
