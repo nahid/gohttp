@@ -85,6 +85,16 @@ func (req *Request) Headers(headerVals map[string]string) *Request {
 	return req
 }
 
+// BasicAuth make basic authentication
+func (req *Request) BasicAuth(username, password string) *Request {
+	credentials := username + ":" + password
+	auth := base64.StdEncoding.EncodeToString([]byte(credentials))
+	headers := req.headers
+	headers["Authorization"]	= "Basic " + auth
+	req.headers = headers
+	return req
+}
+
 // Get is a get http request
 func (req *Request) Get(url string) (*Response, error) {
 	return req.makeRequest("GET", url, req.formVals)
