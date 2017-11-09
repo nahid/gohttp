@@ -49,6 +49,7 @@ func main() {
 - `FormData(data map[string]string)`
 - `Json(data map[string]interface{})`
 - `Query(data map[string]string{})`
+- `BasicAuth(username, password string)`
 - `MultipartFormData(data map[string]string{})`
 - `Upload(name, file string)`
 - `Uploads(files map[string]string{})`
