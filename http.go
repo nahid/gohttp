@@ -76,6 +76,7 @@ func (req *Request) Body(formValues []byte) *Request {
 	return req
 }
 
+// Text is send text data with post request
 func (req *Request) Text(formValues string) *Request {
 
 	req.formVals = bytes.NewBuffer([]byte(formValues))
@@ -215,7 +216,11 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 	}
 
 	request.Header.Set("Content-Type", req.contentType)
-	request.SetBasicAuth(req.basicUser, req.basicPasswd)
+
+	if req.basicUser != "" && req.basicPasswd != "" {
+		request.SetBasicAuth(req.basicUser, req.basicPasswd)
+	}
+
 
 	// set headers from Headers method
 	for key, val := range req.headers {
