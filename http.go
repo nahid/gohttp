@@ -27,6 +27,15 @@ type Request struct {
 	basicUser, basicPasswd string
 }
 
+// NewRequest returns a new request
+func NewRequest(opts ...Option) *Request {
+	r := &Request{}
+	for _, o := range opts {
+		o.apply(r)
+	}
+	return r
+}
+
 func (req *Request) createClient() *http.Client {
 	tr := &req.Transport
 	if req.Client == nil {
