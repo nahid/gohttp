@@ -1,39 +1,38 @@
 package gohttp
 
 import (
-	"net/http"
+	"encoding/json"
 	"io"
 	"io/ioutil"
-	"encoding/json"
+	"net/http"
 )
 
 // Response is a http response struct
 type Response struct {
-	HttpResp *http.Response
+	resp *http.Response
 }
 
 // GetResp get net/http original response
 func (res *Response) GetResp() *http.Response {
-	return res.HttpResp
+	return res.resp
 }
 
 // GetStatusCode returns http status code
 func (res *Response) GetStatusCode() int {
-	return res.HttpResp.StatusCode
+	return res.resp.StatusCode
 }
 
 // GetBody returns response body
 func (res *Response) GetBody() io.Reader {
-	if res.HttpResp == nil {
+	if res.resp == nil {
 		return nil
 	}
-	return res.HttpResp.Body
+	return res.resp.Body
 }
-
 
 // GetBodyAsByte returns response body as byte
 func (res *Response) GetBodyAsByte() ([]byte, error) {
-	body, err := ioutil.ReadAll(res.HttpResp.Body)
+	body, err := ioutil.ReadAll(res.resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +42,7 @@ func (res *Response) GetBodyAsByte() ([]byte, error) {
 
 // GetBodyAsString returns resonpose body as string
 func (res *Response) GetBodyAsString() (string, error) {
-	body, err := ioutil.ReadAll(res.HttpResp.Body)
+	body, err := ioutil.ReadAll(res.resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -51,21 +50,16 @@ func (res *Response) GetBodyAsString() (string, error) {
 	return string(body), nil
 }
 
-
 // GetBodyWithUnmarshal unmarshal response body
-func (res Response) GetBodyWithUnmarshal(v interface{}) (error) {
+func (res Response) GetBodyWithUnmarshal(v interface{}) error {
 	body, err := res.GetBodyAsByte()
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(body, &v)
-
-	if err != nil {
+	if err := json.Unmarshal(body, &v); err != nil {
 		return err
 	}
 
 	return nil
 }
-
-
