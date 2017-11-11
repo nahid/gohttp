@@ -1,29 +1,29 @@
 package gohttp
 
 import (
-	"net/url"
-	"io"
-	"encoding/json"
-	"net/http"
-	"strings"
 	"bytes"
+	"encoding/json"
+	"io"
 	"mime/multipart"
+	"net/http"
+	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
 // Request is a request type
 type Request struct {
-	Transport http.Transport
-	Client *http.Client
-	Cookie http.CookieJar
-	Timeout time.Duration
-	formVals *bytes.Buffer
-	multipartBuffer bytes.Buffer
-	queryVals string
-	headers map[string]string
-	writer *multipart.Writer
-	contentType string
+	Transport              http.Transport
+	Client                 *http.Client
+	Cookie                 http.CookieJar
+	Timeout                time.Duration
+	formVals               *bytes.Buffer
+	multipartBuffer        bytes.Buffer
+	queryVals              string
+	headers                map[string]string
+	writer                 *multipart.Writer
+	contentType            string
 	basicUser, basicPasswd string
 }
 
@@ -32,19 +32,18 @@ func (req *Request) createClient() *http.Client {
 	if req.Client == nil {
 		req.Client = &http.Client{
 			Transport: tr,
-			Timeout: req.Timeout,
-			Jar: req.Cookie,
+			Timeout:   req.Timeout,
+			Jar:       req.Cookie,
 		}
 	}
 
 	return req.Client
 }
 
+// JSON set json data with request
+func (req *Request) JSON(jsonBody map[string]interface{}) *Request {
 
-// Json set json data with request
-func (req *Request) Json(formJson map[string]interface{}) *Request  {
-
-	data, err := json.Marshal(formJson)
+	data, err := json.Marshal(jsonBody)
 	if err != nil {
 		panic(err)
 	}
@@ -137,8 +136,8 @@ func (req *Request) Delete(url string) (*Response, error) {
 	return req.makeRequest("DELETE", url, req.formVals)
 }
 
-// MultiFormData add form data in multipart request
-func (req *Request) MultipartFormData(formData map[string]string) *Request  {
+// MultipartFormData add form data in multipart request
+func (req *Request) MultipartFormData(formData map[string]string) *Request {
 	if req.writer == nil {
 		req.writer = multipart.NewWriter(&req.multipartBuffer)
 	}
@@ -151,7 +150,7 @@ func (req *Request) MultipartFormData(formData map[string]string) *Request  {
 }
 
 // Upload upload a single file
-func (req *Request) Upload(name, file string) (*Request) {
+func (req *Request) Upload(name, file string) *Request {
 	if req.writer == nil {
 		req.writer = multipart.NewWriter(&req.multipartBuffer)
 	}
@@ -177,7 +176,7 @@ func (req *Request) Upload(name, file string) (*Request) {
 }
 
 // Uploads upload multiple files
-func (req *Request) Uploads(files map[string]string) (*Request) {
+func (req *Request) Uploads(files map[string]string) *Request {
 
 	for name, file := range files {
 		_ = req.Upload(name, file)
@@ -232,6 +231,6 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 	if err != nil {
 		return nil, err
 	}
-	response.HttpResp = resp
+	response.resp = resp
 	return &response, nil
 }
