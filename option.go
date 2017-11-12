@@ -20,27 +20,27 @@ func (fn OptionFunc) apply(r *Request) {
 // SetClient option sets client c for request
 func SetClient(c *http.Client) OptionFunc {
 	return func(r *Request) {
-		r.Client = c
+		r.client = c
 	}
 }
 
 // SetTransport option sets Transport t for request
 func SetTransport(t http.Transport) OptionFunc {
 	return func(r *Request) {
-		r.Transport = t
+		r.transport = t
 	}
 }
 
 // SetCookieJar option sets cookie c for request
 func SetCookieJar(c http.CookieJar) OptionFunc {
 	return func(r *Request) {
-		r.Cookie = c
+		r.cookie = c
 	}
 }
 
 // SetTimeout option sets timeout t for request
 func SetTimeout(t time.Duration) OptionFunc {
 	return func(r *Request) {
-		r.Timeout = t
+		r.timeout = t
 	}
 }

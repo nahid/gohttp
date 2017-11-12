@@ -14,10 +14,10 @@ import (
 
 // Request is a request type
 type Request struct {
-	Transport              http.Transport
-	Client                 *http.Client
-	Cookie                 http.CookieJar
-	Timeout                time.Duration
+	transport              http.Transport
+	client                 *http.Client
+	cookie                 http.CookieJar
+	timeout                time.Duration
 	formVals               *bytes.Buffer
 	multipartBuffer        bytes.Buffer
 	queryVals              string
@@ -38,16 +38,16 @@ func NewRequest(opts ...Option) *Request {
 
 // createClient create request client
 func (req *Request) createClient() *http.Client {
-	tr := &req.Transport
-	if req.Client == nil {
-		req.Client = &http.Client{
+	tr := &req.transport
+	if req.client == nil {
+		req.client = &http.Client{
 			Transport: tr,
-			Timeout:   req.Timeout,
-			Jar:       req.Cookie,
+			Timeout:   req.timeout,
+			Jar:       req.cookie,
 		}
 	}
 
-	return req.Client
+	return req.client
 }
 
 // JSON set json data with request
@@ -123,27 +123,37 @@ func (req *Request) BasicAuth(username, password string) *Request {
 
 // Get is a get http request
 func (req *Request) Get(url string) (*Response, error) {
-	return req.makeRequest("GET", url, req.formVals)
+	return req.makeRequest(http.MethodGet, url, req.formVals)
 }
 
 // Post is a post http request
 func (req *Request) Post(url string) (*Response, error) {
-	return req.makeRequest("POST", url, req.formVals)
+	return req.makeRequest(http.MethodPost, url, req.formVals)
 }
 
 // Put is a put http request
 func (req *Request) Put(url string) (*Response, error) {
-	return req.makeRequest("PUT", url, req.formVals)
+	return req.makeRequest(http.MethodPut, url, req.formVals)
 }
 
 // Patch is a patch http request
 func (req *Request) Patch(url string) (*Response, error) {
-	return req.makeRequest("PATCH", url, req.formVals)
+	return req.makeRequest(http.MethodPatch, url, req.formVals)
 }
 
 // Delete is a delete http request
 func (req *Request) Delete(url string) (*Response, error) {
-	return req.makeRequest("DELETE", url, req.formVals)
+	return req.makeRequest(http.MethodDelete, url, req.formVals)
+}
+
+// Head is a head http request
+func (req *Request) Head(url string) (*Response, error) {
+	return req.makeRequest(http.MethodHead, url, req.formVals)
+}
+
+// Head is a head http request
+func (req *Request) Options(url string) (*Response, error) {
+	return req.makeRequest(http.MethodOptions, url, req.formVals)
 }
 
 // MultipartFormData add form data in multipart request
