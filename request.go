@@ -36,6 +36,7 @@ func NewRequest(opts ...Option) *Request {
 	return r
 }
 
+// createClient create request client
 func (req *Request) createClient() *http.Client {
 	tr := &req.Transport
 	if req.Client == nil {
