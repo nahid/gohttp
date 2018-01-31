@@ -39,7 +39,7 @@ func main() {
 }
 ```
 
-#### Async
+#### Async Example
 
 ```go
 package main
