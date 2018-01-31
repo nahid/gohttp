@@ -76,6 +76,8 @@ func main() {
 
 ### Available Method
 
+- `NewRequest(options ...Option)`
+
 #### Request
 
 - `Get(url string)`
@@ -94,6 +96,7 @@ func main() {
 
 #### Data Bindings
 
+- `Headers(data map[string]string)`
 - `FormData(data map[string]string)`
 - `Json(data map[string]interface{})`
 - `Query(data map[string]string{})`
