@@ -1,4 +1,7 @@
 # gohttp
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/nahid/gohttp)](https://goreportcard.com/report/github.com/nahid/gohttp)
+
 HTTP client for Go, its also support asynchronous request
 
 ## Installation
