@@ -20,7 +20,7 @@ import (
 )
 
 func main() {
-	req := gohttp.Request{}
+	req := gohttp.NewRequest()
 
 	resp, err := req.
 		FormData(map[string]string{"name": "Nahid"}).
