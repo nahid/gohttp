@@ -57,9 +57,5 @@ func (res Response) GetBodyWithUnmarshal(v interface{}) error {
 		return err
 	}
 
-	if err := json.Unmarshal(body, &v); err != nil {
-		return err
-	}
-
-	return nil
+	return json.Unmarshal(body, &v)
 }
