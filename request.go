@@ -151,7 +151,7 @@ func (req *Request) Head(url string) (*Response, error) {
 	return req.makeRequest(http.MethodHead, url, req.formVals)
 }
 
-// Head is a head http request
+// Options is a options http request
 func (req *Request) Options(url string) (*Response, error) {
 	return req.makeRequest(http.MethodOptions, url, req.formVals)
 }
