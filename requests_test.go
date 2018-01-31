@@ -23,7 +23,6 @@ func TestGetRequest(t *testing.T) {
 	}
 }
 
-
 // TestPostRequest tests POST request
 func TestPostRequest(t *testing.T) {
 	t.Log("Sending POST request... (expected http code: 200)")
@@ -44,4 +43,3 @@ func TestPostRequest(t *testing.T) {
 		)
 	}
 }
-

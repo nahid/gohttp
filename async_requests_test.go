@@ -9,12 +9,12 @@ func TestAsyncGetRequest(t *testing.T) {
 	req := NewRequest()
 	ch := make(chan *Response)
 
-	for i:=0; i<=100; i++ {
+	for i := 0; i <= 100; i++ {
 		req.AsyncGet("http://httpbin.org/get", ch)
 	}
 
-	for i:=0; i<=100; i++ {
-		resp, err := <- ch
+	for i := 0; i <= 100; i++ {
+		resp, err := <-ch
 
 		if err != true {
 			t.Error(err)
@@ -28,6 +28,5 @@ func TestAsyncGetRequest(t *testing.T) {
 			)
 		}
 	}
-
 
 }
