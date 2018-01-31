@@ -1,5 +1,5 @@
 # gohttp
-HTTP client for Go
+HTTP client for Go, its also support asynchronous request
 
 ## Installation
 
@@ -39,6 +39,41 @@ func main() {
 }
 ```
 
+#### Async
+
+```go
+package main
+
+import (
+	"github.com/nahid/gohttp"
+	"fmt"
+)
+
+func main() {
+	req := gohttp.NewRequest()
+	ch := make(chan *gohttp.Response)
+
+	var users [3]string
+
+	users[0] = "nahid"
+	users[1] = "shipu"
+	users[2] = "sujan"
+
+	for i:=0; i<len(users); i++ {
+		req.
+		FormData(map[string]string{"user": users[i]}).
+		AsyncGet("http://domain.app/send", ch)
+	}
+
+
+	for i:=0; i<len(users); i++ {
+		op := <-ch
+
+		fmt.Println(op.GetBodyAsString())
+	}
+}
+```
+
 ### Available Method
 
 #### Request
@@ -48,6 +83,17 @@ func main() {
 - `Put(url string)`
 - `Patch(url string)`
 - `Delete(url string)`
+
+#### Async Request
+
+- `AsyncGet(url string, ch chan)`
+- `AsyncPost(url string, ch chan)`
+- `AsyncPut(url string, ch chan)`
+- `AsyncPatch(url string, ch chan)`
+- `AsyncDelete(url string, ch chan)`
+
+#### Data Bindings
+
 - `FormData(data map[string]string)`
 - `Json(data map[string]interface{})`
 - `Query(data map[string]string{})`
@@ -57,6 +103,7 @@ func main() {
 - `MultipartFormData(data map[string]string{})`
 - `Upload(name, file string)`
 - `Uploads(files map[string]string{})`
+
 
 #### Response
 
