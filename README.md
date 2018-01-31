@@ -62,7 +62,7 @@ func main() {
 	for i:=0; i<len(users); i++ {
 		req.
 		FormData(map[string]string{"user": users[i]}).
-		AsyncGet("http://domain.app/send", ch)
+		AsyncPost("http://domain.app/send", ch)
 	}
 
 
