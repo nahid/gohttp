@@ -1,8 +1,7 @@
 # gohttp
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/nahid/gohttp)](https://goreportcard.com/report/github.com/nahid/gohttp)
-
 [![Build Status](https://travis-ci.org/nahid/gohttp.svg?branch=master)](https://travis-ci.org/nahid/gohttp)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nahid/gohttp)](https://goreportcard.com/report/github.com/nahid/gohttp)
 
 HTTP client for Go, its also support asynchronous request
 
