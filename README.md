@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/nahid/gohttp.svg?branch=master)](https://travis-ci.org/nahid/gohttp)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nahid/gohttp)](https://goreportcard.com/report/github.com/nahid/gohttp)
+[![Coverage Status](https://coveralls.io/repos/github/nahid/gohttp/badge.svg?branch=master)](https://coveralls.io/github/nahid/gohttp?branch=master)
 
 HTTP client for Go, its also support asynchronous request
 
