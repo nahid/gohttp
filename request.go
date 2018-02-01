@@ -40,7 +40,7 @@ func NewRequest(opts ...Option) *Request {
 func (req *Request) createClient() *http.Client {
 	tr := req.transport
 	if tr == nil {
-		tr = &http.Transport{}
+		tr = http.DefaultTransport.(*http.Transport)
 	}
 
 	if req.client == nil {
