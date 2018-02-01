@@ -25,9 +25,9 @@ func SetClient(c *http.Client) OptionFunc {
 }
 
 // SetTransport option sets Transport t for request
-func SetTransport(t http.Transport) OptionFunc {
+func SetTransport(t *http.Transport) OptionFunc {
 	return func(r *Request) {
-		r.transport = t
+		r.transport = *t
 	}
 }
 
