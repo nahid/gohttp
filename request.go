@@ -14,7 +14,7 @@ import (
 
 // Request is a request type
 type Request struct {
-	transport              http.Transport
+	transport              *http.Transport
 	client                 *http.Client
 	cookie                 http.CookieJar
 	timeout                time.Duration
@@ -38,7 +38,11 @@ func NewRequest(opts ...Option) *Request {
 
 // createClient create request client
 func (req *Request) createClient() *http.Client {
-	tr := &req.transport
+	tr := req.transport
+	if tr == nil {
+		tr = &http.Transport{}
+	}
+
 	if req.client == nil {
 		req.client = &http.Client{
 			Transport: tr,
