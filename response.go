@@ -40,7 +40,7 @@ func (res *Response) GetBodyAsByte() ([]byte, error) {
 	return body, nil
 }
 
-// GetBodyAsString returns resonpose body as string
+// GetBodyAsString returns response body as string
 func (res *Response) GetBodyAsString() (string, error) {
 	body, err := ioutil.ReadAll(res.resp.Body)
 	if err != nil {
@@ -48,6 +48,16 @@ func (res *Response) GetBodyAsString() (string, error) {
 	}
 
 	return string(body), nil
+}
+
+// GetBodyAsJSONRawMessage returns response body as json.RawMessage
+func (res *Response) GetBodyAsJSONRawMessage() (json.RawMessage, error) {
+	body, err := ioutil.ReadAll(res.resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return json.RawMessage(body), nil
 }
 
 // GetBodyWithUnmarshal unmarshal response body
