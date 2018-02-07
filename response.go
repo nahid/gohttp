@@ -36,6 +36,7 @@ func (res *Response) GetBodyAsByte() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.resp.Body.Close()
 
 	return body, nil
 }
@@ -46,6 +47,7 @@ func (res *Response) GetBodyAsString() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer res.resp.Body.Close()
 
 	return string(body), nil
 }
@@ -56,6 +58,7 @@ func (res *Response) GetBodyAsJSONRawMessage() (json.RawMessage, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.resp.Body.Close()
 
 	return json.RawMessage(body), nil
 }
