@@ -31,6 +31,7 @@ func TestAsyncGetRequest(t *testing.T) {
 
 }
 
+// TestAsyncPostRequest tests asynchronous POST request
 func TestAsyncPostRequest(t *testing.T) {
 	t.Log("Sending POST async request... (expected http code: 200)")
 
@@ -60,6 +61,7 @@ func TestAsyncPostRequest(t *testing.T) {
 }
 
 
+// TestAsyncPutRequest tests asynchronous PUT request
 func TestAsyncPutRequest(t *testing.T) {
 	t.Log("Sending PUT async request... (expected http code: 200)")
 
@@ -90,7 +92,7 @@ func TestAsyncPutRequest(t *testing.T) {
 
 
 
-
+// TestAsyncPatchRequest tests asynchronous PATCH request
 func TestAsyncPatchRequest(t *testing.T) {
 	t.Log("Sending PATCH async request... (expected http code: 200)")
 
@@ -120,7 +122,7 @@ func TestAsyncPatchRequest(t *testing.T) {
 }
 
 
-
+// TestAsyncDeleteRequest tests asynchronous DELETE request
 func TestAsyncDeleteRequest(t *testing.T) {
 	t.Log("Sending DELETE async request... (expected http code: 200)")
 
