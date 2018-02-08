@@ -56,7 +56,7 @@ import (
 
 func main() {
 	req := gohttp.NewRequest()
-	ch := make(chan *gohttp.Response)
+	ch := make(chan *gohttp.AsyncResponse)
 
 	var users [3]string
 
