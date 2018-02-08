@@ -23,7 +23,6 @@ func TestGetRespResponse(t *testing.T) {
 	}
 }
 
-
 // TestGetRespResponse tests GetResp response
 func TestGetBodyResponse(t *testing.T) {
 	t.Log("(GetBody expected value)")
@@ -44,4 +43,3 @@ func TestGetBodyResponse(t *testing.T) {
 		)
 	}
 }
-

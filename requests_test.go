@@ -29,14 +29,13 @@ func TestPostRequest(t *testing.T) {
 
 	req := NewRequest()
 
-	resp, err := req.FormData(map[string]string {
+	resp, err := req.FormData(map[string]string{
 		"name": "Nahid",
 	}).Post("http://httpbin.org/post")
 
 	if err != nil {
 		t.Error(err)
 	}
-
 
 	if resp.GetStatusCode() != 200 {
 
@@ -48,14 +47,13 @@ func TestPostRequest(t *testing.T) {
 	}
 }
 
-
 // TestPutRequest tests PUT request
 func TestPutRequest(t *testing.T) {
 	t.Log("Sending PUT request... (expected http code: 200)")
 
 	req := NewRequest()
 
-	resp, err := req.FormData(map[string]string {
+	resp, err := req.FormData(map[string]string{
 		"name": "Nahid",
 	}).JSON(map[string]interface{}{
 		"website": "www.nahid.im",
@@ -64,7 +62,6 @@ func TestPutRequest(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 
 	if resp.GetStatusCode() != 200 {
 
@@ -82,7 +79,7 @@ func TestPatchRequest(t *testing.T) {
 
 	req := NewRequest()
 
-	resp, err := req.FormData(map[string]string {
+	resp, err := req.FormData(map[string]string{
 		"name": "Nahid",
 	}).Headers(map[string]string{
 		"Custom-Header": "nothing",
@@ -91,7 +88,6 @@ func TestPatchRequest(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 
 	if resp.GetStatusCode() != 200 {
 
@@ -103,24 +99,19 @@ func TestPatchRequest(t *testing.T) {
 	}
 }
 
-
-
 // TestPatchRequest tests DELETE request
 func TestDeleteRequest(t *testing.T) {
 	t.Log("Sending DELETE request... (expected http code: 200)")
 
 	req := NewRequest()
 
-	resp, err := req.Body([]byte{
-
-	}).Headers(map[string]string{
+	resp, err := req.Body([]byte{}).Headers(map[string]string{
 		"Custom-Header": "nothing",
 	}).Delete("http://httpbin.org/delete")
 
 	if err != nil {
 		t.Error(err)
 	}
-
 
 	if resp.GetStatusCode() != 200 {
 

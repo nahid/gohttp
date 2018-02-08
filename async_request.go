@@ -4,7 +4,6 @@ import (
 	"bytes"
 )
 
-
 // AsyncGet is a asynchronous get http request
 func (req *Request) AsyncGet(url string, ch chan<- *AsyncResponse) {
 	go req.makeAsyncRequest("get", url, req.formVals, ch)
@@ -37,9 +36,8 @@ func (req *Request) makeAsyncRequest(verb, uri string, payloads *bytes.Buffer, c
 
 	res = &AsyncResponse{
 		Resp: resp,
-		Err: err,
+		Err:  err,
 	}
 
 	ch <- res
 }
-

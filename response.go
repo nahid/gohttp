@@ -15,9 +15,8 @@ type Response struct {
 // AsyncResponse is a response struct for asynchronous request
 type AsyncResponse struct {
 	Resp *Response
-	Err error
+	Err  error
 }
-
 
 // GetResp get net/http original response
 func (res *Response) GetResp() *http.Response {
