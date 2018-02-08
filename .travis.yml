@@ -13,6 +13,4 @@ matrix:
 
 
 script:
-  - go get ./...
-  - diff -u <(echo -n) <(gofmt -d .)
   - go test -v ./...
