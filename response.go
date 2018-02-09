@@ -24,12 +24,18 @@ func (res *Response) GetResp() *http.Response {
 }
 
 // GetStatusCode returns http status code
+// if Response is not returned from a Request
+// the status code will be 0
 func (res *Response) GetStatusCode() int {
+	if res.resp == nil {
+		return 0
+	}
 	return res.resp.StatusCode
 }
 
 // GetBody returns response body
-func (res *Response) GetBody() io.Reader {
+// It is the caller's responsibility to close Body
+func (res *Response) GetBody() io.ReadCloser {
 	if res.resp == nil {
 		return nil
 	}
@@ -38,41 +44,44 @@ func (res *Response) GetBody() io.Reader {
 
 // GetBodyAsByte returns response body as byte
 func (res *Response) GetBodyAsByte() ([]byte, error) {
-	body, err := ioutil.ReadAll(res.resp.Body)
+	body := res.GetBody()
+	if body == nil {
+		return nil, nil
+	}
+	defer body.Close()
+
+	byts, err := ioutil.ReadAll(body)
 	if err != nil {
 		return nil, err
 	}
-	defer res.resp.Body.Close()
 
-	return body, nil
+	return byts, nil
 }
 
 // GetBodyAsString returns response body as string
 func (res *Response) GetBodyAsString() (string, error) {
-	body, err := ioutil.ReadAll(res.resp.Body)
-	if err != nil {
+	body, err := res.GetBodyAsByte()
+	if err != nil || body == nil {
 		return "", err
 	}
-	defer res.resp.Body.Close()
 
 	return string(body), nil
 }
 
 // GetBodyAsJSONRawMessage returns response body as json.RawMessage
 func (res *Response) GetBodyAsJSONRawMessage() (json.RawMessage, error) {
-	body, err := ioutil.ReadAll(res.resp.Body)
-	if err != nil {
+	body, err := res.GetBodyAsByte()
+	if err != nil || body == nil {
 		return nil, err
 	}
-	defer res.resp.Body.Close()
 
 	return json.RawMessage(body), nil
 }
 
-// GetBodyWithUnmarshal unmarshal response body
-func (res Response) GetBodyWithUnmarshal(v interface{}) error {
+// UnmarshalBody unmarshal response body
+func (res *Response) UnmarshalBody(v interface{}) error {
 	body, err := res.GetBodyAsByte()
-	if err != nil {
+	if err != nil || body == nil {
 		return err
 	}
 
