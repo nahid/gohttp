@@ -111,6 +111,8 @@ func main() {
 - `MultipartFormData(data map[string]string{})`
 - `Upload(name, file string)`
 - `Uploads(files map[string]string{})`
+- `UploadFromReader(param MultipartParam)`
+- `UploadsFromReader(params []MultipartParam)`
 
 
 #### Response
