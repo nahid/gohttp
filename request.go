@@ -27,6 +27,7 @@ type Request struct {
 	basicUser, basicPasswd string
 }
 
+// MultipartParam is a multipart param type
 type MultipartParam struct {
 	FieldName string
 	FileName  string
