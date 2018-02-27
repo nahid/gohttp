@@ -234,6 +234,16 @@ func (req *Request) Uploads(files map[string]string) *Request {
 	return req
 }
 
+// UploadsFromReader upload multiple files
+func (req *Request) UploadsFromReader(params []MultipartParam) *Request {
+
+	for _, param := range params {
+		_ = req.UploadFromReader(param)
+	}
+
+	return req
+}
+
 // makeRequest makes a http request
 func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Response, error) {
 	response := Response{}
