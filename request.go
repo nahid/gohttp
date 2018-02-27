@@ -27,6 +27,12 @@ type Request struct {
 	basicUser, basicPasswd string
 }
 
+type MultipartParam struct {
+	FieldName string
+	FileName  string
+	FileBody  io.Reader
+}
+
 // NewRequest returns a new request
 func NewRequest(opts ...Option) *Request {
 	r := &Request{}
@@ -169,7 +175,6 @@ func (req *Request) MultipartFormData(formData map[string]string) *Request {
 	for key, val := range formData {
 		req.writer.WriteField(key, val)
 	}
-
 	return req
 }
 
@@ -191,6 +196,26 @@ func (req *Request) Upload(name, file string) *Request {
 		panic(err)
 	}
 	if _, err = io.Copy(fw, f); err != nil {
+		panic(err)
+	}
+
+	req.contentType = req.writer.FormDataContentType()
+	req.formVals = &req.multipartBuffer
+	return req
+}
+
+// UploadFromReader upload a single file
+func (req *Request) UploadFromReader(param MultipartParam) *Request {
+	if req.writer == nil {
+		req.writer = multipart.NewWriter(&req.multipartBuffer)
+	}
+
+	// Add file
+	fw, err := req.writer.CreateFormFile(param.FieldName, param.FileName)
+	if err != nil {
+		panic(err)
+	}
+	if _, err = io.Copy(fw, param.FileBody); err != nil {
 		panic(err)
 	}
 
