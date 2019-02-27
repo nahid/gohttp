@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // Response is a http response struct
@@ -86,4 +87,14 @@ func (res *Response) UnmarshalBody(v interface{}) error {
 	}
 
 	return json.Unmarshal(body, &v)
+}
+
+//Protocol returns response proto
+func (res *Response) Protocol() string{
+	return res.resp.Proto
+}
+
+//URL returns response Location
+func (res *Response) URL() (*url.URL, error)  {
+	return res.resp.Location()
 }
