@@ -282,7 +282,11 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 
 	// set headers from Headers method
 	for key, val := range req.headers {
-		request.Header.Set(key, val)
+		if key == "Host" {
+			request.Host = val
+		}else{
+			request.Header.Set(key, val)
+		}
 	}
 
 	//request.Close = true
