@@ -285,6 +285,9 @@ func (req *Request) makeRequest(verb, url string, payloads *bytes.Buffer) (*Resp
 		request.Header.Set(key, val)
 	}
 
+	if val,ok := req.headers["Host"]; ok  {
+		request.Host = val
+	}
 	//request.Close = true
 	resp, err := client.Do(request)
 
